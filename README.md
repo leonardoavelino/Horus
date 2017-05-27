@@ -1,14 +1,13 @@
 ## Horus
 
 [![Platforms](https://img.shields.io/cocoapods/p/Horus.svg)](https://cocoapods.org/pods/Horus)
-[![License](https://img.shields.io/cocoapods/l/Horus.svg)](https://raw.githubusercontent.com/cookiecutter-swift/Horus/master/LICENSE)
+[![License](https://img.shields.io/cocoapods/l/Horus.svg)](https://raw.githubusercontent.com/caynan/Horus/master/LICENSE)
 
 [![Swift Package Manager](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Horus.svg)](https://cocoapods.org/pods/Horus)
 
-[![Travis](https://img.shields.io/travis/cookiecutter-swift/Horus/master.svg)](https://travis-ci.org/cookiecutter-swift/Horus/branches)
-[![JetpackSwift](https://img.shields.io/badge/JetpackSwift-framework-red.svg)](http://github.com/JetpackSwift/Framework)
+[![Travis](https://img.shields.io/travis/caynan/Horus/master.svg)](https://travis-ci.org/caynan/Horus/branches)
 
 A swifty way to handle binary data.
 
@@ -76,7 +75,7 @@ import PackageDescription
 let package = Package(
     name: "HelloHorus",
     dependencies: [
-        .Package(url: "https://github.com/cookiecutter-swift/Horus.git", "0.1")
+        .Package(url: "https://github.com/caynan/Horus.git", "0.1")
     ]
 )
 ```
@@ -96,7 +95,7 @@ $ git init
 - Add Horus as a git [submodule](http://git-scm.com/docs/git-submodule) by running the following command:
 
 ```bash
-$ git submodule add https://github.com/cookiecutter-swift/Horus.git
+$ git submodule add https://github.com/caynan/Horus.git
 $ git submodule update --init --recursive
 ```
 
@@ -120,7 +119,7 @@ $ git submodule update --init --recursive
 
 #### Embeded Binaries
 
-- Download the latest release from https://github.com/cookiecutter-swift/Horus/releases
+- Download the latest release from https://github.com/caynan/Horus/releases
 - Next, select your application project in the Project Navigator (blue project icon) to navigate to the target configuration window and select the application target under the "Targets" heading in the sidebar.
 - In the tab bar at the top of that window, open the "General" panel.
 - Click on the `+` button under the "Embedded Binaries" section.
@@ -131,4 +130,4 @@ $ git submodule update --init --recursive
 
 ## License
 
-Horus is released under the MIT license. See [LICENSE](https://github.com/cookiecutter-swift/Horus/blob/master/LICENSE) for details.
+Horus is released under the MIT license. See [LICENSE](https://github.com/caynan/Horus/blob/master/LICENSE) for details.
