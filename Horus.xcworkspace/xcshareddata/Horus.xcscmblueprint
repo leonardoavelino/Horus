@@ -1,20 +1,24 @@
 {
-  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "0242AE30C43D70B8E8DFC023F0804935A98672F1",
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "0242AE30C43D70B8E8DFC023F0804935A98672F1+++60F174A",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "95438028B10BBB846574013D29F154A00556A9D1" : 9223372036854775807,
-    "D0725CAC6FF2D66F2C83C2C48DC12106D42DAA64" : 9223372036854775807,
-    "0242AE30C43D70B8E8DFC023F0804935A98672F1" : 9223372036854775807,
-    "E084C86B03F81D63323C9E7510697EA528A758C7" : 9223372036854775807
+    "D0725CAC6FF2D66F2C83C2C48DC12106D42DAA64+++4F3A08F" : 9223372036854775807,
+    "E084C86B03F81D63323C9E7510697EA528A758C7+++3AB01BE" : 9223372036854775807,
+    "0242AE30C43D70B8E8DFC023F0804935A98672F1+++60F174A" : 9223372036854775807,
+    "95438028B10BBB846574013D29F154A00556A9D1+++01992E7" : 9223372036854775807,
+    "95438028B10BBB846574013D29F154A00556A9D1+++9F1DEE7" : 9223372036854775807,
+    "95438028B10BBB846574013D29F154A00556A9D1+++FD9BAE9" : 9223372036854775807
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "499D123B-2F45-4AE9-8BBB-4B0F9A79DC7B",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "95438028B10BBB846574013D29F154A00556A9D1" : "Horus\/Carthage\/Checkouts\/Nimble\/",
-    "D0725CAC6FF2D66F2C83C2C48DC12106D42DAA64" : "Horus\/Carthage\/Checkouts\/Quick\/",
-    "0242AE30C43D70B8E8DFC023F0804935A98672F1" : "Horus\/",
-    "E084C86B03F81D63323C9E7510697EA528A758C7" : "Horus\/Carthage\/Checkouts\/xcconfigs\/"
+    "D0725CAC6FF2D66F2C83C2C48DC12106D42DAA64+++4F3A08F" : "Horus\/Carthage\/Checkouts\/Quick\/",
+    "E084C86B03F81D63323C9E7510697EA528A758C7+++3AB01BE" : "Horus\/Carthage\/Checkouts\/xcconfigs\/",
+    "0242AE30C43D70B8E8DFC023F0804935A98672F1+++60F174A" : "Horus\/",
+    "95438028B10BBB846574013D29F154A00556A9D1+++01992E7" : "Horus\/Carthage\/Checkouts\/Nimble\/",
+    "95438028B10BBB846574013D29F154A00556A9D1+++9F1DEE7" : "Horus\/Carthage\/Checkouts\/Nimble\/",
+    "95438028B10BBB846574013D29F154A00556A9D1+++FD9BAE9" : "Horus\/Carthage\/Checkouts\/Quick\/Externals\/Nimble\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Horus",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -23,27 +27,32 @@
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/caynan\/Horus.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0242AE30C43D70B8E8DFC023F0804935A98672F1"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0242AE30C43D70B8E8DFC023F0804935A98672F1+++60F174A"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Quick\/Nimble.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "95438028B10BBB846574013D29F154A00556A9D1"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "95438028B10BBB846574013D29F154A00556A9D1+++01992E7"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Quick\/Nimble.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "95438028B10BBB846574013D29F154A00556A9D1"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "95438028B10BBB846574013D29F154A00556A9D1+++9F1DEE7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Quick\/Nimble.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "95438028B10BBB846574013D29F154A00556A9D1+++FD9BAE9"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Quick\/Quick.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D0725CAC6FF2D66F2C83C2C48DC12106D42DAA64"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D0725CAC6FF2D66F2C83C2C48DC12106D42DAA64+++4F3A08F"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jspahrsummers\/xcconfigs.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E084C86B03F81D63323C9E7510697EA528A758C7"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E084C86B03F81D63323C9E7510697EA528A758C7+++3AB01BE"
     }
   ]
 }

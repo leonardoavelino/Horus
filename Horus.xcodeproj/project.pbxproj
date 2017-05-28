@@ -19,6 +19,7 @@
 		FE270B391EDA2F9B00CD2872 /* BinarySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE270B381EDA2F9B00CD2872 /* BinarySpec.swift */; };
 		FE270B3A1EDA2F9B00CD2872 /* BinarySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE270B381EDA2F9B00CD2872 /* BinarySpec.swift */; };
 		FE270B3B1EDA2FBC00CD2872 /* Binary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE270B291EDA2B5D00CD2872 /* Binary.swift */; };
+		FE8AD6511EDAFE880033B326 /* BinaryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8AD6501EDAFE880033B326 /* BinaryError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -231,6 +232,7 @@
 		35CD65181E60192300AF060B /* watchOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		FE270B291EDA2B5D00CD2872 /* Binary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Binary.swift; sourceTree = "<group>"; };
 		FE270B381EDA2F9B00CD2872 /* BinarySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpec.swift; sourceTree = "<group>"; };
+		FE8AD6501EDAFE880033B326 /* BinaryError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinaryError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,6 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				FE270B291EDA2B5D00CD2872 /* Binary.swift */,
+				FE8AD6501EDAFE880033B326 /* BinaryError.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -802,6 +805,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE270B2A1EDA2B5D00CD2872 /* Binary.swift in Sources */,
+				FE8AD6511EDAFE880033B326 /* BinaryError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -26,9 +26,6 @@
       location = "group:Package.swift">
    </FileRef>
    <FileRef
-      location = "group:Readme.md">
-   </FileRef>
-   <FileRef
       location = "group:Carthage/Checkouts/Quick/Quick.xcodeproj">
    </FileRef>
    <FileRef

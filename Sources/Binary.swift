@@ -66,4 +66,50 @@ public struct Binary: ExpressibleByArrayLiteral {
     public init(with data: [UInt8]) {
         self.data = Data(bytes: data)
     }
+    
+    // MARK: - Integer parsing
+    /**
+     Scan an Integer from data.
+     
+     `Integer` is a protocol that all signed and unsigned numbers in swift extend from.
+     see [hierarchy](http://swiftdoc.org/v3.0/protocol/Integer/hierarchy/).
+     
+     - parameter start: index of first byte.
+     - parameter length: the length of the given number.
+     
+     - Throws: `BinaryError.outOfBounds` if `start + length` is bigger than the total length of binary array.
+     
+     - Returns: The parsed integer number.
+     */
+    public func scanValue<T: Integer>(start: Int, length: Int) throws -> T {
+        let end = start + length
+        guard end <= self.data.count else { throw BinaryError.outOfBounds }
+        
+        return self.data.subdata(in: start..<end).withUnsafeBytes{ $0.pointee }
+    }
+    
+    /**
+     Scan an Integer from data, auto inferring length from the return type. See note for caveats.
+     
+     `Integer` is a protocol that all signed and unsigned numbers in swift extend from.
+     see [hierarchy](http://swiftdoc.org/v3.0/protocol/Integer/hierarchy/).
+     
+     - parameter offset: index of `Integer` first byte.
+     
+     - Throws: `BinaryError.outOfBounds` if `offset + type.size` is bigger than the total length of binary array.
+     
+     - Returns: The parsed integer number.
+     
+     - Note: 
+        - On a 32-bit platform, Int is the same size as Int32.
+        - On a 32-bit platform, UInt is the same size as UInt32.
+        - On a 64-bit platform, Int is the same size as Int64.
+        - On a 64-bit platform, UInt is the same size as UInt64.
+     */
+    public func get<T: Integer>(at offset: Int) throws -> T {
+        let end = offset + MemoryLayout<T>.size
+        guard end <= self.data.count else { throw BinaryError.outOfBounds }
+        
+        return try self.scanValue(start: offset, length: end)
+    }
 }
