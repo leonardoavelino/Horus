@@ -123,6 +123,49 @@ class BinarySpec: QuickSpec {
                 // MARK: Signed Integers
                 // TODO: Add test for remaining Integer types.
             }
+            
+            // MARK: FloatingPoint numbers
+            context("FloatingPoint Numbers Parsing") {
+                it("Should parse Double with length") {
+                    let doubleBin: Binary = [0x71, 0x3d, 0x0a, 0xd7, 0xa3, 0x10, 0x45, 0x40] // => 42.13
+                    do {
+                        let parsedDouble: Double = try doubleBin.scanValue(start: 0, length: 8)
+                        expect(parsedDouble).to(equal(42.13))
+                    } catch {
+                        fail("It should have parsed Double, but it failed.")
+                    }
+                }
+                
+                it("Should parse Double") {
+                    let doubleBin: Binary = [0x71, 0x3d, 0x0a, 0xd7, 0xa3, 0x10, 0x45, 0x40] // => 42.13
+                    do {
+                        let parsedDouble: Double = try doubleBin.get(at: 0)
+                        expect(parsedDouble).to(equal(42.13))
+                    } catch {
+                        fail("It should have parsed Double, but it failed.")
+                    }
+                }
+                
+                it("Should parse Float with length") {
+                    let floatBin: Binary = [0x1F, 0x85, 0x28, 0x42] // => 42.13
+                    do {
+                        let parsedDouble: Float = try floatBin.scanValue(start: 0, length: 4)
+                        expect(parsedDouble).to(equal(42.13))
+                    } catch {
+                        fail("It should have parsed Float, but it failed.")
+                    }
+                }
+                
+                it("Should parse Float") {
+                    let floatBin: Binary = [0x1F, 0x85, 0x28, 0x42] // => 42.13
+                    do {
+                        let parsedDouble: Float = try floatBin.get(at: 0)
+                        expect(parsedDouble).to(equal(42.13))
+                    } catch {
+                        fail("It should have parsed Float, but it failed.")
+                    }
+                }
+            }
         }
     }
     

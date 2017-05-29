@@ -112,4 +112,43 @@ public struct Binary: ExpressibleByArrayLiteral {
         
         return try self.scanValue(start: offset, length: end)
     }
+    
+    /**
+     Scan a `FloatingPoint` from data.
+     
+     `FloatingPoint` is a protocol that all decimal numbers extend from.
+     see [hierarchy](http://swiftdoc.org/v3.0/protocol/FloatingPoint/hierarchy/).
+     
+     - parameter start: index of first byte.
+     - parameter length: the length of given number.
+     
+     - Throws: `BinaryError.outOfBounds` if `start + length` is bigger than the total length of binary array.
+     
+     - Returns: The parsed decimal number.
+     */
+    public func scanValue<T: FloatingPoint>(start: Int, length: Int) throws -> T {
+        let end = start + length
+        guard end <= self.data.count else { throw BinaryError.outOfBounds }
+        
+        return self.data.subdata(in: start..<end).withUnsafeBytes{ $0.pointee }
+    }
+    
+    /**
+     Scan a `FloatingPoint` from data, auto inferring length from the return type.
+     
+     `FloatingPoint` is a protocol that all decimal numbers extend from.
+     see [hierarchy](http://swiftdoc.org/v3.0/protocol/FloatingPoint/hierarchy/).
+     
+     - parameter offset: index of `FloatingPoint` first byte.
+     
+     - Throws: `BinaryError.outOfBounds` if `start + length` is bigger than the total length of binary array.
+     
+     - Returns: The parsed decimal number.
+     */
+    public func get<T: FloatingPoint>(at offset: Int) throws -> T {
+        let end = offset + MemoryLayout<T>.size
+        guard end <= self.data.count else { throw BinaryError.outOfBounds }
+        
+        return try self.scanValue(start: offset, length: end)
+    }
 }
