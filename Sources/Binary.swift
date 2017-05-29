@@ -151,4 +151,67 @@ public struct Binary: ExpressibleByArrayLiteral {
         
         return try self.scanValue(start: offset, length: end)
     }
+    
+    /**
+     Parse `String` of known size from underlying data.
+     
+     - parameter offset: Offset in bytes from where this string should be read.
+     - parameter length: Length in bytes of string to read.
+     - parameter encoding: Encoding to be used, `ASCII` is the default.
+     
+     - Throws: 
+        - `BinaryError.outOfBounds` if `offset + length` is bigger than the total length of binary array.
+        - `BinaryError.failedConversion` if can't create string using the given encoding.
+     
+     - Returns: String from buffer.
+     */
+    public func get(offset: Int, length: Int, encoding: String.Encoding = .ascii) throws -> String {
+        let end = offset + length
+        guard end <= self.data.count else { throw BinaryError.outOfBounds }
+        
+        let strData = self.data.subdata(in: offset..<end)
+        
+        guard let response = String(bytes: strData, encoding: encoding) else {
+            throw BinaryError.failedConversion
+        }
+        
+        return response
+    }
+    
+    /**
+     Parse Nul('\0') terminated `String` from underlying data.
+     
+     - parameter offset: Offset in bytes from where this string should be read.
+     - parameter encoding: Encoding to be used, `ASCII` is the default.
+     
+     - Throws:
+     - `BinaryError.outOfBounds` if `offset` is greater or equal to the total length of the binary array.
+     - `BinaryError.failedConversion` if can't create string using the given encoding.
+     
+     - Returns: String from buffer.
+     */
+    public func get(offset: Int, encoding: String.Encoding = .ascii) throws -> String {
+        guard offset <= data.count else { throw BinaryError.outOfBounds }
+        
+        // Find the index of the Nul character, or nil if can't find one.
+        let nulIndex = data.withUnsafeBytes { (pointer: UnsafePointer<CChar>) -> Int? in
+            for idx in offset..<data.count {
+                guard CChar(data[idx]) != CChar(0) else {
+                    return idx
+                }
+            }
+            // Case when we reach the end the string before finding '\0'
+            return nil
+        }
+        
+        guard let stringEnd = nulIndex else { throw BinaryError.nonNulTerminatedString }
+        
+        let strData = self.data.subdata(in: offset..<stringEnd)
+        
+        guard let response = String(data: strData, encoding: encoding) else {
+            throw BinaryError.failedConversion
+        }
+        
+        return response
+    }
 }

@@ -166,6 +166,30 @@ class BinarySpec: QuickSpec {
                     }
                 }
             }
+            
+            // MARK: - Strings
+            context("String Parsing") {
+                let binString1: Binary = [0x43, 0x61, 0x79, 0x6E, 0x61, 0x6E, 0x00] // => "Caynan"
+                let binString2: Binary = [0x48, 0x6F, 0x72, 0x75, 0x73] // => "Horus"
+                
+                it("Should parse string with given length") {
+                    do {
+                        let parsedString = try binString2.get(offset: 0, length: 5)
+                        expect(parsedString).to(equal("Horus"))
+                    } catch {
+                        fail("It should have parsed String with offset, but it failed")
+                    }
+                }
+                
+                it("Should parse Nul terminated string") {
+                    do {
+                        let parsedString = try binString1.get(offset: 0)
+                        expect(parsedString).to(equal("Caynan"))
+                    } catch {
+                        fail("It should have parsed nul terminated string, but it failed")
+                    }
+                }
+            }
         }
     }
     
