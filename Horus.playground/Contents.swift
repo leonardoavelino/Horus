@@ -18,3 +18,6 @@ let binStr: Binary = [0x48, 0x6F, 0x72, 0x75, 0x73, 0x00] // => "Horus\0"
 
 try binStr.get(offset: 0, length: 5)
 try binStr.get(offset: 1)
+
+bin[1...2].count
+bin[1..<2].count

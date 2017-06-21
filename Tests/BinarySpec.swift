@@ -122,6 +122,10 @@ class BinarySpec: QuickSpec {
                 
                 // MARK: Signed Integers
                 // TODO: Add test for remaining Integer types.
+                it("Should parse Int") {
+                    
+                }
+                
             }
             
             // MARK: FloatingPoint numbers

@@ -11,14 +11,14 @@ import Foundation
 /// Wrapper for immutable parsing of binary data.
 public struct Binary: ExpressibleByArrayLiteral {
     public typealias Element = UInt8
-    
+
     // MARK: - Properties
-    
+
     /// Underlaying data for this struct.
     private let data: Data
-    
+
     // MARK: - Initializers
-    
+
     /**
      Initialize with an array literal.
      
@@ -36,7 +36,7 @@ public struct Binary: ExpressibleByArrayLiteral {
     public init(arrayLiteral elements: Element...) {
         self.data = Data(bytes: elements)
     }
-    
+
     /**
      Initialize with a `Data` Object.
      
@@ -51,7 +51,7 @@ public struct Binary: ExpressibleByArrayLiteral {
     public init(with data: Data) {
         self.data = data
     }
-    
+
     /**
      Initialize with an Array.
      
@@ -66,7 +66,41 @@ public struct Binary: ExpressibleByArrayLiteral {
     public init(with data: [UInt8]) {
         self.data = Data(bytes: data)
     }
-    
+
+    /// Get a byte on a given index.
+    ///
+    /// - Parameter index: The index
+    public subscript(index: Int) -> UInt8 {
+        precondition(index < self.count, "Index out of bounds.")
+
+        return self.data[index]
+    }
+
+    /// Accesses the bytes at the specified range of indexes.
+    ///
+    /// - Parameter range: The range of indexes (the upperBound is not included)
+    public subscript(range: Range<Int>) -> Binary {
+        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
+
+        let range = Range(range.lowerBound..<range.upperBound)
+        let subData = Data(self.data[range])
+        return Binary(with: subData)
+    }
+
+    /// Accesses the bytes at the specified range of indexes.
+    ///
+    /// - Parameter range: A closed range (e.g: lowerBound...upperBound)
+    public subscript(range: CountableClosedRange<Int>) -> Binary {
+        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
+
+        return self[range.lowerBound..<range.upperBound + 1]
+    }
+
+    /// The number of bytes contained in self.
+    public var count: Int {
+        return self.data.count
+    }
+
     // MARK: - Integer parsing
     /**
      Scan an Integer from data.
@@ -83,11 +117,11 @@ public struct Binary: ExpressibleByArrayLiteral {
      */
     public func scanValue<T: Integer>(start: Int, length: Int) throws -> T {
         let end = start + length
-        guard end <= self.data.count else { throw BinaryError.outOfBounds }
-        
-        return self.data.subdata(in: start..<end).withUnsafeBytes{ $0.pointee }
+        guard end <= self.count else { throw BinaryError.outOfBounds }
+
+        return self.data.subdata(in: start..<end).withUnsafeBytes { $0.pointee }
     }
-    
+
     /**
      Scan an Integer from data, auto inferring length from the return type. See note for caveats.
      
@@ -108,11 +142,11 @@ public struct Binary: ExpressibleByArrayLiteral {
      */
     public func get<T: Integer>(at offset: Int) throws -> T {
         let end = offset + MemoryLayout<T>.size
-        guard end <= self.data.count else { throw BinaryError.outOfBounds }
-        
+        guard end <= self.count else { throw BinaryError.outOfBounds }
+
         return try self.scanValue(start: offset, length: end)
     }
-    
+
     /**
      Scan a `FloatingPoint` from data.
      
@@ -128,11 +162,11 @@ public struct Binary: ExpressibleByArrayLiteral {
      */
     public func scanValue<T: FloatingPoint>(start: Int, length: Int) throws -> T {
         let end = start + length
-        guard end <= self.data.count else { throw BinaryError.outOfBounds }
-        
-        return self.data.subdata(in: start..<end).withUnsafeBytes{ $0.pointee }
+        guard end <= self.count else { throw BinaryError.outOfBounds }
+
+        return self.data.subdata(in: start..<end).withUnsafeBytes { $0.pointee }
     }
-    
+
     /**
      Scan a `FloatingPoint` from data, auto inferring length from the return type.
      
@@ -147,11 +181,11 @@ public struct Binary: ExpressibleByArrayLiteral {
      */
     public func get<T: FloatingPoint>(at offset: Int) throws -> T {
         let end = offset + MemoryLayout<T>.size
-        guard end <= self.data.count else { throw BinaryError.outOfBounds }
-        
+        guard end <= self.count else { throw BinaryError.outOfBounds }
+
         return try self.scanValue(start: offset, length: end)
     }
-    
+
     /**
      Parse `String` of known size from underlying data.
      
@@ -167,17 +201,17 @@ public struct Binary: ExpressibleByArrayLiteral {
      */
     public func get(offset: Int, length: Int, encoding: String.Encoding = .ascii) throws -> String {
         let end = offset + length
-        guard end <= self.data.count else { throw BinaryError.outOfBounds }
-        
+        guard end <= self.count else { throw BinaryError.outOfBounds }
+
         let strData = self.data.subdata(in: offset..<end)
-        
+
         guard let response = String(bytes: strData, encoding: encoding) else {
             throw BinaryError.failedConversion
         }
-        
+
         return response
     }
-    
+
     /**
      Parse Nul('\0') terminated `String` from underlying data.
      
@@ -192,9 +226,9 @@ public struct Binary: ExpressibleByArrayLiteral {
      */
     public func get(offset: Int, encoding: String.Encoding = .ascii) throws -> String {
         guard offset <= data.count else { throw BinaryError.outOfBounds }
-        
+
         // Find the index of the Nul character, or nil if can't find one.
-        let nulIndex = data.withUnsafeBytes { (pointer: UnsafePointer<CChar>) -> Int? in
+        let nulIndex = data.withUnsafeBytes { (_: UnsafePointer<CChar>) -> Int? in
             for idx in offset..<data.count {
                 guard CChar(data[idx]) != CChar(0) else {
                     return idx
@@ -203,15 +237,15 @@ public struct Binary: ExpressibleByArrayLiteral {
             // Case when we reach the end the string before finding '\0'
             return nil
         }
-        
+
         guard let stringEnd = nulIndex else { throw BinaryError.nonNulTerminatedString }
-        
+
         let strData = self.data.subdata(in: offset..<stringEnd)
-        
+
         guard let response = String(data: strData, encoding: encoding) else {
             throw BinaryError.failedConversion
         }
-        
+
         return response
     }
 }
