@@ -15,7 +15,7 @@ public struct Binary: ExpressibleByArrayLiteral {
     // MARK: - Properties
 
     /// Underlaying data for this struct.
-    private let data: Data
+    fileprivate let data: Data
 
     // MARK: - Initializers
 
@@ -67,40 +67,14 @@ public struct Binary: ExpressibleByArrayLiteral {
         self.data = Data(bytes: data)
     }
 
-    /// Get a byte on a given index.
-    ///
-    /// - Parameter index: The index
-    public subscript(index: Int) -> UInt8 {
-        precondition(index < self.count, "Index out of bounds.")
-
-        return self.data[index]
-    }
-
-    /// Accesses the bytes at the specified range of indexes.
-    ///
-    /// - Parameter range: The range of indexes (the upperBound is not included)
-    public subscript(range: Range<Int>) -> Binary {
-        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
-
-        let range = Range(range.lowerBound..<range.upperBound)
-        let subData = Data(self.data[range])
-        return Binary(with: subData)
-    }
-
-    /// Accesses the bytes at the specified range of indexes.
-    ///
-    /// - Parameter range: A closed range (e.g: lowerBound...upperBound)
-    public subscript(range: CountableClosedRange<Int>) -> Binary {
-        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
-
-        return self[range.lowerBound..<range.upperBound + 1]
-    }
-
     /// The number of bytes contained in self.
     public var count: Int {
         return self.data.count
     }
+}
 
+// MARK: - Integer Parsers
+extension Binary {
     // MARK: - Integer parsing
     /**
      Scan an Integer from data.
@@ -134,11 +108,11 @@ public struct Binary: ExpressibleByArrayLiteral {
      
      - Returns: The parsed integer number.
      
-     - Note: 
-        - On a 32-bit platform, Int is the same size as Int32.
-        - On a 32-bit platform, UInt is the same size as UInt32.
-        - On a 64-bit platform, Int is the same size as Int64.
-        - On a 64-bit platform, UInt is the same size as UInt64.
+     - Note:
+     - On a 32-bit platform, Int is the same size as Int32.
+     - On a 32-bit platform, UInt is the same size as UInt32.
+     - On a 64-bit platform, Int is the same size as Int64.
+     - On a 64-bit platform, UInt is the same size as UInt64.
      */
     public func get<T: Integer>(at offset: Int) throws -> T {
         let end = offset + MemoryLayout<T>.size
@@ -146,7 +120,10 @@ public struct Binary: ExpressibleByArrayLiteral {
 
         return try self.scanValue(start: offset, length: end)
     }
+}
 
+// MARK: - FloatingPoint Parsers
+extension Binary {
     /**
      Scan a `FloatingPoint` from data.
      
@@ -193,9 +170,9 @@ public struct Binary: ExpressibleByArrayLiteral {
      - parameter length: Length in bytes of string to read.
      - parameter encoding: Encoding to be used, `ASCII` is the default.
      
-     - Throws: 
-        - `BinaryError.outOfBounds` if `offset + length` is bigger than the total length of binary array.
-        - `BinaryError.failedConversion` if can't create string using the given encoding.
+     - Throws:
+     - `BinaryError.outOfBounds` if `offset + length` is bigger than the total length of binary array.
+     - `BinaryError.failedConversion` if can't create string using the given encoding.
      
      - Returns: String from buffer.
      */
@@ -209,7 +186,7 @@ public struct Binary: ExpressibleByArrayLiteral {
             throw BinaryError.failedConversion
         }
 
-        return response
+        return responsex
     }
 
     /**
@@ -247,5 +224,52 @@ public struct Binary: ExpressibleByArrayLiteral {
         }
 
         return response
+    }
+}
+
+// MARK: - Conversions
+extension Binary {
+    public func toByteArray() -> [UInt8] {
+        return Array(self.data)
+    }
+
+}
+
+// MARK: - Subscripts
+extension Binary {
+    /// Get a byte on a given index.
+    ///
+    /// - Parameter index: The index
+    public subscript(index: Int) -> UInt8 {
+        precondition(index < self.count, "Index out of bounds.")
+
+        return self.data[index]
+    }
+
+    /// Accesses the bytes at the specified range of indexes.
+    ///
+    /// - Parameter range: The range of indexes (the upperBound is not included)
+    public subscript(range: Range<Int>) -> Binary {
+        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
+
+        let range = Range(range.lowerBound..<range.upperBound)
+        let subData = Data(self.data[range])
+        return Binary(with: subData)
+    }
+
+    /// Accesses the bytes at the specified range of indexes.
+    ///
+    /// - Parameter range: A closed range (e.g: lowerBound...upperBound)
+    public subscript(range: CountableClosedRange<Int>) -> Binary {
+        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
+
+        return self[range.lowerBound..<range.upperBound + 1]
+    }
+}
+
+// MARK: - Equatable Protocol
+extension Binary: Equatable {
+    public static func ==(lhs: Binary, rhs: Binary) -> Bool {
+        return lhs.data == rhs.data
     }
 }
