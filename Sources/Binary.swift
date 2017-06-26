@@ -186,7 +186,7 @@ extension Binary {
             throw BinaryError.failedConversion
         }
 
-        return responsex
+        return response
     }
 
     /**
