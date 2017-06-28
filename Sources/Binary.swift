@@ -71,6 +71,20 @@ public struct Binary: ExpressibleByArrayLiteral {
     public var count: Int {
         return self.data.count
     }
+
+    /// Get a bit on a given position.
+    ///
+    /// - Parameter position: the position of the bit we want.
+    /// - Returns: Byte with the selected bit.
+    /// - Throws: `BinaryError.outOfBounds` if position is out of bounds.
+    public func bit(_ position: Int) throws -> UInt8 {
+        let byteSize = 8
+        let bytePosition = position / byteSize
+        let bitPosition = UInt8(7 - (position % byteSize))
+        let byte: UInt8 = try self.get(at: bytePosition)
+
+        return (byte >> bitPosition) & 0x01
+    }
 }
 
 // MARK: - Integer Parsers
