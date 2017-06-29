@@ -50,6 +50,7 @@ public struct Binary: ExpressibleByArrayLiteral {
      */
     public init(with data: Data) {
         self.data = data
+
     }
 
     /**
@@ -67,22 +68,60 @@ public struct Binary: ExpressibleByArrayLiteral {
         self.data = Data(bytes: data)
     }
 
+    /// Initialize with a hexadecimal string.
+    ///
+    /// - Parameter hexString: Hexadecimal string (e.g: "FACA")
+    public init?(with hexString: String) {
+        guard let byteArray = Binary.hexaToBytes(hexString: hexString) else {
+            print("'\(hexString)' is not a valid hexadecimal")
+            return nil
+        }
+
+        self.init(with: byteArray)
+    }
+
     /// The number of bytes contained in self.
     public var count: Int {
         return self.data.count
     }
 
+    // MARK: - Private Methods
+    private static func hexaToBytes(hexString: String) -> [UInt8]? {
+        // `isHexadecimal` is a local extension. see `StringHelper`
+//        guard hexString.isHexadecimal() else { return nil }
+
+        let hexa = Array(hexString.characters)
+
+        return stride(from: 0, to: hexString.characters.count, by: 2).flatMap {
+            UInt8(String(hexa[$0..<$0.advanced(by: 2)]), radix: 16)
+        }
+    }
+}
+
+// MARK: - Bit manipulation
+extension Binary {
     /// Get a bit on a given position.
     ///
     /// - Parameter position: the position of the bit we want.
     /// - Returns: Byte with the selected bit.
     /// - Throws: `BinaryError.outOfBounds` if position is out of bounds.
-    public func bit(_ position: Int) throws -> UInt8 {
+    public func bit(_ position: Int, isLittleEndian: Bool = true ) throws -> UInt8 {
         let byteSize = 8
-        let bytePosition = position / byteSize
-        let bitPosition = UInt8(7 - (position % byteSize))
-        let byte: UInt8 = try self.get(at: bytePosition)
+        let bytePosition: Int
+        let bitPosition: UInt8
 
+        if isLittleEndian {
+            bytePosition = self.count - (position / byteSize) - 1
+            bitPosition = UInt8(position % byteSize)
+        } else {
+            bytePosition = position / byteSize
+            bitPosition = UInt8(7 - (position % byteSize))
+        }
+        // Check invariants for byte position.
+        guard bytePosition >= 0, bytePosition < self.count else { throw BinaryError.outOfBounds }
+
+        // Get byte and return the requested bit.
+        let byte: UInt8 = self[bytePosition]
         return (byte >> bitPosition) & 0x01
     }
 }

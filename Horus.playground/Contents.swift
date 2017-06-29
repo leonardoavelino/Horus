@@ -1,4 +1,5 @@
 //: Playground - noun: a place where people can play
+import Foundation
 import Horus
 
 // Working with Integers.
@@ -21,3 +22,12 @@ try binStr.get(offset: 1)
 
 bin[1...2].count
 bin[1..<2].count
+
+let test: Binary = [0b0000001]
+try test.bit(5)
+
+let hexStr = "00FF"
+
+var num = Int(hexStr, radix: 16)!
+var myData = Data(bytes: &num, count: MemoryLayout.size(ofValue: num))
+
