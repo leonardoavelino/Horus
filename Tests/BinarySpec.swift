@@ -420,6 +420,22 @@ class BinarySpec: QuickSpec {
                 }
 
             }
+            
+            //MARK: - Nibble parsing
+            context("Nibble parsing") {
+                it("Should get the correct nibbles") {
+                    let binary: Binary = [0x0F]
+                    do {
+                        let nibble0 = try binary.nibble(0)
+                        let nibble1 = try binary.nibble(1)
+                        
+                        expect(nibble0).to(equal(0))
+                        expect(nibble1).to(equal(15))
+                    } catch {
+                        fail("It failed to get nibbles.")
+                    }
+                }
+            }
 
             // MARK: - Integer parsing
             context("Integer Parsing") {

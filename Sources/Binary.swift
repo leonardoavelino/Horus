@@ -124,6 +124,31 @@ extension Binary {
         let byte: UInt8 = self[bytePosition]
         return (byte >> bitPosition) & 0x01
     }
+    
+    /// Get a nibble on a given position.
+    ///
+    /// - Parameter position: the position of the nibble we want.
+    /// - Returns: Byte with the selected bit.
+    /// - Throws: `BinaryError.outOfBounds` if position is out of bounds.
+    public func nibble(_ position: Int) throws -> UInt8 {
+        let bytePosition = position / 2
+        let nibblePosition = position % 2
+        
+        guard bytePosition < self.count else { throw BinaryError.outOfBounds }
+        var value: UInt8
+        switch nibblePosition {
+        case 0:
+            let byte = self[bytePosition]
+            value = byte >> 4
+        case 1:
+            let byte = self[bytePosition]
+            value = byte
+        default:
+            fatalError("This should never happen")
+        }
+        
+        return value & 0x0F
+    }
 }
 
 // MARK: - Integer Parsers
