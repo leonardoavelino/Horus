@@ -30,4 +30,3 @@ let hexStr = "00FF"
 
 var num = Int(hexStr, radix: 16)!
 var myData = Data(bytes: &num, count: MemoryLayout.size(ofValue: num))
-

@@ -41,6 +41,59 @@ class BinarySpec: QuickSpec {
                     expect(binary[2]).to(equal(0x79))
                 }
 
+                it("Initializes with an Integer") {
+                    func testSize<T: Integer>(_ number: T) {
+                        let binary = Binary(with: number)
+                        expect(binary.count).to(equal(MemoryLayout.size(ofValue: number)))
+                    }
+                    // for UInts
+                    testSize(UInt.max)
+                    testSize(UInt32.max)
+                    testSize(UInt16.max)
+                    testSize(UInt8.max)
+
+                    // for Ints
+                    testSize(Int.max)
+                    testSize(Int32.max)
+                    testSize(Int16.max)
+                    testSize(Int8.max)
+
+                    // Test values
+                    func testValue<T: Integer>(_ testCase: (number: T, expected: [UInt8]) ) {
+                        let binary = Binary(with: testCase.number)
+                        for i in 0..<testCase.expected.count {
+                            expect(binary[i]).to(equal(testCase.expected[i]))
+                        }
+                    }
+                    // UInts
+                    testValue( (number: UInt8.min, expected: [0x00]) )
+                    testValue( (number: UInt16.min, expected: [0x00, 0x00]) )
+                    testValue( (number: UInt32.min, expected: [0x00, 0x00, 0x00, 0x00]) )
+                    testValue( (number: UInt64.min, expected: [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) )
+
+                    testValue( (number: UInt8.max, expected: [0xFF]) )
+                    testValue( (number: UInt16.max, expected: [0xFF, 0xFF]) )
+                    testValue( (number: UInt32.max, expected: [0xFF, 0xFF, 0xFF, 0xFF]) )
+                    testValue( (number: UInt64.max, expected: [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]) )
+
+                    testValue((number: UInt(0x1234567890), expected: [0x00, 0x00, 0x00, 0x12, 0x34, 0x56, 0x78, 0x90]))
+
+                    // Ints
+                    testValue( (number: Int8.min, expected: [0x80]) )
+                    testValue( (number: Int16.min, expected: [0x80, 0x00]) )
+                    testValue( (number: Int32.min, expected: [0x80, 0x00, 0x00, 0x00]) )
+                    testValue( (number: Int64.min, expected: [0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) )
+
+                    testValue( (number: Int8.max, expected: [0x7F]) )
+                    testValue( (number: Int16.max, expected: [0x7F, 0xFF]) )
+                    testValue( (number: Int32.max, expected: [0x7F, 0xFF, 0xFF, 0xFF]) )
+                    testValue( (number: Int64.max, expected: [0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]) )
+
+                    testValue((number: Int(0x1234567890), expected: [0x00, 0x00, 0x00, 0x12, 0x34, 0x56, 0x78, 0x90]))
+                    // 2-complement bin: 1111 1111 1111 1111 1111 1111 1110 1101 1100 1011 1010 1001 1000 0111 0111 0000
+                    testValue((number: -Int(0x1234567890), expected: [0xFF, 0xFF, 0xFF, 0xED, 0xCB, 0xA9, 0x87, 0x70]))
+                }
+
                 it("Initializes with a hex string.") {
                     let hexString = "00FF"
                     guard let binary = Binary(with: hexString) else {
@@ -420,34 +473,34 @@ class BinarySpec: QuickSpec {
                 }
 
             }
-            
-            //MARK: - Nibble parsing
+
+            // MARK: - Nibble parsing
             context("Nibble parsing") {
                 it("Should get the correct nibbles for 0x0F") {
                     let binary: Binary = [0x0F]
                     do {
                         let nibble0 = try binary.nibble(0)
                         let nibble1 = try binary.nibble(1)
-                        
+
                         expect(nibble0).to(equal(0))
                         expect(nibble1).to(equal(15))
                     } catch {
                         fail("It failed to get nibbles.")
                     }
                 }
-                
+
                 it("Should get the correct nibbles for 0xF0CA") {
                     guard let binary = Binary(with: "F0CA") else {
                         fail("Failed to initialize binary with F0CA")
                         return
                     }
-                    
+
                     do {
                         let nibble0 = try binary.nibble(0)
                         let nibble1 = try binary.nibble(1)
                         let nibble2 = try binary.nibble(2)
                         let nibble3 = try binary.nibble(3)
-                        
+
                         expect(nibble0).to(equal(15))
                         expect(nibble1).to(equal(0))
                         expect(nibble2).to(equal(12))
@@ -456,16 +509,16 @@ class BinarySpec: QuickSpec {
                         fail("It failed to get the nibbles of 0xF0CA")
                     }
                 }
-                
+
                 it("Should get the correct value for [0x0, 0xCA]") {
                     let binary: Binary = [0x0, 0xCA]
-                    
+
                     do {
                         let nibble0 = try binary.nibble(0)
                         let nibble1 = try binary.nibble(1)
                         let nibble2 = try binary.nibble(2)
                         let nibble3 = try binary.nibble(3)
-                        
+
                         expect(nibble0).to(equal(0))
                         expect(nibble1).to(equal(0))
                         expect(nibble2).to(equal(12))
@@ -474,19 +527,19 @@ class BinarySpec: QuickSpec {
                         fail("it failed to get the nibbles from [0x0, 0xCA]")
                     }
                 }
-                
+
                 it("Should get the correct value for 0x0CA") {
                     guard let binary = Binary(with: "0CA") else {
                         fail("Failed to initialize binary with '0CA'")
                         return
                     }
-                    
+
                     do {
                         let nibble0 = try binary.nibble(0)
                         let nibble1 = try binary.nibble(1)
                         let nibble2 = try binary.nibble(2)
                         let nibble3 = try binary.nibble(3)
-                        
+
                         expect(nibble0).to(equal(0))
                         expect(nibble1).to(equal(0))
                         expect(nibble2).to(equal(12))
@@ -495,16 +548,16 @@ class BinarySpec: QuickSpec {
                         fail("it failed to get the nibbles from '0CA'")
                     }
                 }
-                
+
                 it("Should get the correct value for [0xA, 0xB]") {
                     let binary: Binary = [0xA, 0xB]
-                    
+
                     do {
                         let nibble0 = try binary.nibble(0)
                         let nibble1 = try binary.nibble(1)
                         let nibble2 = try binary.nibble(2)
                         let nibble3 = try binary.nibble(3)
-                        
+
                         expect(nibble0).to(equal(0))
                         expect(nibble1).to(equal(10))
                         expect(nibble2).to(equal(0))

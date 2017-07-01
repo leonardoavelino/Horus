@@ -68,6 +68,22 @@ public struct Binary: ExpressibleByArrayLiteral {
         self.data = Data(bytes: data)
     }
 
+    /**
+     Initialize with an Integer.
+     
+     You may initialize `Binary` with an `Integer`.
+     
+     - parameter number: Integer object to parse.
+     
+     - Returns: Initialized object.
+     
+     - Note: Data is copied, so be careful if you're trying to parse a large amount of data.
+     */
+    public init<T: Integer>(with number: T) {
+        var _number = number
+        self.init(with: Data(buffer: UnsafeBufferPointer(start: &_number, count: 1)).reversed())
+    }
+
     /// Initialize with a hexadecimal string.
     ///
     /// - Parameter hexString: Hexadecimal string (e.g: "FACA")
@@ -97,10 +113,10 @@ public struct Binary: ExpressibleByArrayLiteral {
             let indexStartOfHexa = hexaString.index(hexaString.startIndex, offsetBy: 2)
             hexaString = hexaString.substring(with: indexStartOfHexa..<hexaString.endIndex)
         }
-        
+
         // `isHexadecimal` is a local extension. see `StringHelper`
         guard hexaString.isHexadecimal() else { return nil }
-        
+
         var hexa = Array(hexaString.characters)
         // pad with zeros on the left, case odd length.
         if hexa.count % 2 != 0 { hexa.insert("0", at: 0) }
@@ -137,7 +153,7 @@ extension Binary {
         let byte: UInt8 = self[bytePosition]
         return (byte >> bitPosition) & 0x01
     }
-    
+
     /// Get a nibble on a given position.
     ///
     /// - Parameter position: the position of the nibble we want.
@@ -146,7 +162,7 @@ extension Binary {
     public func nibble(_ position: Int) throws -> UInt8 {
         let bytePosition = position / 2
         let nibblePosition = position % 2
-        
+
         guard bytePosition < self.count else { throw BinaryError.outOfBounds }
         var value: UInt8
         switch nibblePosition {
@@ -159,7 +175,7 @@ extension Binary {
         default:
             fatalError("This should never happen")
         }
-        
+
         return value & 0x0F
     }
 }
@@ -356,13 +372,13 @@ extension Binary {
 
         return self[range.lowerBound..<range.upperBound + 1]
     }
-    
+
     /// Accesses the bytes at the specified range of indexes.
     ///
     /// - Parameter range: An open range of consecutive elemens (e.g: 0..<5)
     public subscript(range: CountableRange<Int>) -> Binary {
         precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
-        
+
         let range = Range(range.lowerBound..<range.upperBound)
         let subData = Data(self.data[range])
         return Binary(with: subData)
