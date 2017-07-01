@@ -356,6 +356,17 @@ extension Binary {
 
         return self[range.lowerBound..<range.upperBound + 1]
     }
+    
+    /// Accesses the bytes at the specified range of indexes.
+    ///
+    /// - Parameter range: An open range of consecutive elemens (e.g: 0..<5)
+    public subscript(range: CountableRange<Int>) -> Binary {
+        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
+        
+        let range = Range(range.lowerBound..<range.upperBound)
+        let subData = Data(self.data[range])
+        return Binary(with: subData)
+    }
 }
 
 // MARK: - Equatable Protocol
