@@ -86,13 +86,26 @@ public struct Binary: ExpressibleByArrayLiteral {
     }
 
     // MARK: - Private Methods
+    /// Convert a hexa string to an array of bytes.
+    ///
+    /// - Parameter hexString: A hexa string.
+    /// - Returns: an [UInt8] representation of hexString.
     private static func hexaToBytes(hexString: String) -> [UInt8]? {
+        var hexaString = hexString
+        // clean hexaString case hexString starts with 0x or 0X.
+        if hexaString.hasPrefix("0x") || hexaString.hasPrefix("0X") {
+            let indexStartOfHexa = hexaString.index(hexaString.startIndex, offsetBy: 2)
+            hexaString = hexaString.substring(with: indexStartOfHexa..<hexaString.endIndex)
+        }
+        
         // `isHexadecimal` is a local extension. see `StringHelper`
-//        guard hexString.isHexadecimal() else { return nil }
+        guard hexaString.isHexadecimal() else { return nil }
+        
+        var hexa = Array(hexaString.characters)
+        // pad with zeros on the left, case odd length.
+        if hexa.count % 2 != 0 { hexa.insert("0", at: 0) }
 
-        let hexa = Array(hexString.characters)
-
-        return stride(from: 0, to: hexString.characters.count, by: 2).flatMap {
+        return stride(from: 0, to: hexa.count, by: 2).flatMap {
             UInt8(String(hexa[$0..<$0.advanced(by: 2)]), radix: 16)
         }
     }

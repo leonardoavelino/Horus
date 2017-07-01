@@ -54,7 +54,7 @@ class BinarySpec: QuickSpec {
                     expect(binary[1]).to(equal(0xFF))
 
                     let wrongBin = Binary(with: "XX")
-                    expect(wrongBin).toNot(beNil())
+                    expect(wrongBin).to(beNil())
                 }
             }
 
@@ -423,7 +423,7 @@ class BinarySpec: QuickSpec {
             
             //MARK: - Nibble parsing
             context("Nibble parsing") {
-                it("Should get the correct nibbles") {
+                it("Should get the correct nibbles for 0x0F") {
                     let binary: Binary = [0x0F]
                     do {
                         let nibble0 = try binary.nibble(0)
@@ -433,6 +433,84 @@ class BinarySpec: QuickSpec {
                         expect(nibble1).to(equal(15))
                     } catch {
                         fail("It failed to get nibbles.")
+                    }
+                }
+                
+                it("Should get the correct nibbles for 0xF0CA") {
+                    guard let binary = Binary(with: "F0CA") else {
+                        fail("Failed to initialize binary with F0CA")
+                        return
+                    }
+                    
+                    do {
+                        let nibble0 = try binary.nibble(0)
+                        let nibble1 = try binary.nibble(1)
+                        let nibble2 = try binary.nibble(2)
+                        let nibble3 = try binary.nibble(3)
+                        
+                        expect(nibble0).to(equal(15))
+                        expect(nibble1).to(equal(0))
+                        expect(nibble2).to(equal(12))
+                        expect(nibble3).to(equal(10))
+                    } catch {
+                        fail("It failed to get the nibbles of 0xF0CA")
+                    }
+                }
+                
+                it("Should get the correct value for [0x0, 0xCA]") {
+                    let binary: Binary = [0x0, 0xCA]
+                    
+                    do {
+                        let nibble0 = try binary.nibble(0)
+                        let nibble1 = try binary.nibble(1)
+                        let nibble2 = try binary.nibble(2)
+                        let nibble3 = try binary.nibble(3)
+                        
+                        expect(nibble0).to(equal(0))
+                        expect(nibble1).to(equal(0))
+                        expect(nibble2).to(equal(12))
+                        expect(nibble3).to(equal(10))
+                    } catch {
+                        fail("it failed to get the nibbles from [0x0, 0xCA]")
+                    }
+                }
+                
+                it("Should get the correct value for 0x0CA") {
+                    guard let binary = Binary(with: "0CA") else {
+                        fail("Failed to initialize binary with '0CA'")
+                        return
+                    }
+                    
+                    do {
+                        let nibble0 = try binary.nibble(0)
+                        let nibble1 = try binary.nibble(1)
+                        let nibble2 = try binary.nibble(2)
+                        let nibble3 = try binary.nibble(3)
+                        
+                        expect(nibble0).to(equal(0))
+                        expect(nibble1).to(equal(0))
+                        expect(nibble2).to(equal(12))
+                        expect(nibble3).to(equal(10))
+                    } catch {
+                        fail("it failed to get the nibbles from '0CA'")
+                    }
+                }
+                
+                it("Should get the correct value for [0xA, 0xB]") {
+                    let binary: Binary = [0xA, 0xB]
+                    
+                    do {
+                        let nibble0 = try binary.nibble(0)
+                        let nibble1 = try binary.nibble(1)
+                        let nibble2 = try binary.nibble(2)
+                        let nibble3 = try binary.nibble(3)
+                        
+                        expect(nibble0).to(equal(0))
+                        expect(nibble1).to(equal(10))
+                        expect(nibble2).to(equal(0))
+                        expect(nibble3).to(equal(11))
+                    } catch {
+                        fail("it failed to get the nibbles from [0xA, 0xB]")
                     }
                 }
             }
