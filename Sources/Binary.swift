@@ -10,12 +10,25 @@ import Foundation
 
 /// Wrapper for immutable parsing of binary data.
 public struct Binary: ExpressibleByArrayLiteral {
-    public typealias Element = UInt8
-
     // MARK: - Properties
 
     /// Underlaying data for this struct.
-    fileprivate let data: Data
+    fileprivate var data: Data
+
+    public typealias Element = UInt8
+    public typealias SubSequence = Binary
+    public typealias Index = Int
+    public typealias IndexDistance = Int
+
+    /// The first index of the container.
+    public var startIndex: Binary.Index {
+        return self.data.startIndex
+    }
+
+    /// The last index of the container.
+    public var endIndex: Binary.Index {
+        return self.data.endIndex
+    }
 
     // MARK: - Initializers
 
@@ -33,7 +46,7 @@ public struct Binary: ExpressibleByArrayLiteral {
      
      - Note: Data is copied, so be careful if you're trying to parse a large amount of data.
      */
-    public init(arrayLiteral elements: Element...) {
+    public init(arrayLiteral elements: Binary.Element...) {
         self.data = Data(bytes: elements)
     }
 
@@ -123,6 +136,84 @@ public struct Binary: ExpressibleByArrayLiteral {
 
         return stride(from: 0, to: hexa.count, by: 2).flatMap {
             UInt8(String(hexa[$0..<$0.advanced(by: 2)]), radix: 16)
+        }
+    }
+}
+
+// MARK: - MutableCollection Protocol
+extension Binary: MutableCollection {
+    /// Get the index after the given index
+    ///
+    /// - Parameter i: a `Binary.Index` aka Int.
+    /// - Returns: The next `Binary.Index`
+    public func index(after i: Binary.Index) -> Binary.Index {
+        return self.data.index(after: i)
+    }
+
+    /// Get a byte on a given index.
+    ///
+    /// - Parameter index: The index
+    public subscript(position: Binary.Index) -> Binary.Element {
+        get {
+            precondition(position < self.count, "Index out of bounds.")
+
+            return self.data[position]
+        }
+
+        set {
+            precondition(position < self.count, "Index out of bounds.")
+
+            self.data[position] = newValue
+        }
+    }
+
+    /// Accesses the bytes at the specified range of indexes.
+    ///
+    /// - Parameter range: The range of indexes (the upperBound is not included)
+    public subscript(bounds: Range<Binary.Index>) -> Binary.SubSequence {
+        get {
+            precondition(bounds.lowerBound >= 0 && bounds.upperBound < self.count, "Index out of bounds.")
+
+            let range = Range(bounds.lowerBound..<bounds.upperBound)
+            let subData = Data(self.data[range])
+            return Binary(with: subData)
+        }
+
+        set {
+            precondition((bounds.upperBound - bounds.lowerBound) + 1 == newValue.count,
+                         "Range length should be equal to new values count")
+
+            self.data.replaceSubrange(bounds, with: newValue)
+        }
+    }
+
+    /// Accesses the bytes at the specified range of indexes.
+    ///
+    /// - Parameter range: A closed range (e.g: lowerBound...upperBound)
+    public subscript(bounds: CountableClosedRange<Binary.Index>) -> Binary.SubSequence {
+        get {
+            precondition(bounds.lowerBound >= 0 && bounds.upperBound < self.count, "Index out of bounds.")
+
+            return self[bounds.lowerBound..<bounds.upperBound + 1]
+        }
+
+        set {
+            self[bounds.lowerBound..<bounds.upperBound + 1] = newValue
+        }
+    }
+
+    /// Accesses the bytes at the specified range of indexes.
+    ///
+    /// - Parameter range: An open range of consecutive elemens (e.g: 0..<5)
+    public subscript(bounds: CountableRange<Binary.Index>) -> Binary.SubSequence {
+        get {
+            precondition(bounds.lowerBound >= 0 && bounds.upperBound <= self.count, "Index out of bounds.")
+
+            return self[bounds.lowerBound ..< bounds.upperBound + 1]
+        }
+
+        set {
+            self[bounds.lowerBound ..< bounds.upperBound + 1] = newValue
         }
     }
 }
@@ -336,52 +427,11 @@ extension Binary {
 
 // MARK: - Conversions
 extension Binary {
+    /// Get an array with the contents of `Binary`
+    ///
+    /// - Returns: [UInt8] with bytes from `Binary`
     public func toByteArray() -> [UInt8] {
         return Array(self.data)
-    }
-
-}
-
-// MARK: - Subscripts
-extension Binary {
-    /// Get a byte on a given index.
-    ///
-    /// - Parameter index: The index
-    public subscript(index: Int) -> UInt8 {
-        precondition(index < self.count, "Index out of bounds.")
-
-        return self.data[index]
-    }
-
-    /// Accesses the bytes at the specified range of indexes.
-    ///
-    /// - Parameter range: The range of indexes (the upperBound is not included)
-    public subscript(range: Range<Int>) -> Binary {
-        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
-
-        let range = Range(range.lowerBound..<range.upperBound)
-        let subData = Data(self.data[range])
-        return Binary(with: subData)
-    }
-
-    /// Accesses the bytes at the specified range of indexes.
-    ///
-    /// - Parameter range: A closed range (e.g: lowerBound...upperBound)
-    public subscript(range: CountableClosedRange<Int>) -> Binary {
-        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
-
-        return self[range.lowerBound..<range.upperBound + 1]
-    }
-
-    /// Accesses the bytes at the specified range of indexes.
-    ///
-    /// - Parameter range: An open range of consecutive elemens (e.g: 0..<5)
-    public subscript(range: CountableRange<Int>) -> Binary {
-        precondition(range.lowerBound >= 0 && range.upperBound < self.count, "Index out of bounds.")
-
-        let range = Range(range.lowerBound..<range.upperBound)
-        let subData = Data(self.data[range])
-        return Binary(with: subData)
     }
 }
 

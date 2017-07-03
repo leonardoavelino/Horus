@@ -111,6 +111,41 @@ class BinarySpec: QuickSpec {
                 }
             }
 
+            // MARK: - Subscripts
+            context("Subscripts") {
+                it("Should access single element") {
+                    let binary: Binary = [0x00, 0x01, 0x02]
+
+                    expect(binary[0]).to(equal(0x00))
+                    expect(binary[1]).to(equal(0x01))
+                    expect(binary[2]).to(equal(0x02))
+                }
+
+                it("Should change single element") {
+                    var binary: Binary = [0x00, 0x01, 0x02]
+
+                    expect(binary[0]).to(equal(0x00)) // Check old value
+                    binary[0] = 0x42 // Change value
+                    expect(binary[0]).to(equal(0x42)) // Check that it changed
+                }
+
+                it("Should access a range of elements") {
+                    let binary: Binary = [0x00, 0x01, 0x02]
+
+                    expect(binary[0..<binary.count]).to(equal(binary))
+                }
+
+                it("Should change a range of elements") {
+                    var binary: Binary = [0x00, 0x01, 0x02]
+
+                    binary[0...2] = [0x42, 0x43, 0x44]
+
+                    expect(binary[0]).to(equal(0x42))
+                    expect(binary[1]).to(equal(0x43))
+                    expect(binary[2]).to(equal(0x44))
+                }
+            }
+
             // MARK: - Little Endian Tests
             context("Bit access - Little Endian") {
                 it("Get the correct bits for 0000001") {
