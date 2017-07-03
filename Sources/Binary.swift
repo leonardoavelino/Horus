@@ -172,15 +172,13 @@ extension Binary: MutableCollection {
     /// - Parameter range: The range of indexes (the upperBound is not included)
     public subscript(bounds: Range<Binary.Index>) -> Binary.SubSequence {
         get {
-            precondition(bounds.lowerBound >= 0 && bounds.upperBound < self.count, "Index out of bounds.")
-
             let range = Range(bounds.lowerBound..<bounds.upperBound)
             let subData = Data(self.data[range])
             return Binary(with: subData)
         }
 
         set {
-            precondition((bounds.upperBound - bounds.lowerBound) + 1 == newValue.count,
+            precondition((bounds.upperBound - bounds.lowerBound) == newValue.count,
                          "Range length should be equal to new values count")
 
             self.data.replaceSubrange(bounds, with: newValue)
@@ -189,32 +187,45 @@ extension Binary: MutableCollection {
 
     /// Accesses the bytes at the specified range of indexes.
     ///
-    /// - Parameter range: A closed range (e.g: lowerBound...upperBound)
-    public subscript(bounds: CountableClosedRange<Binary.Index>) -> Binary.SubSequence {
+    /// - Parameter range: An open range of consecutive elements (e.g: 0..<5)
+    public subscript(bounds: CountableRange<Binary.Index>) -> Binary.SubSequence {
         get {
-            precondition(bounds.lowerBound >= 0 && bounds.upperBound < self.count, "Index out of bounds.")
-
-            return self[bounds.lowerBound..<bounds.upperBound + 1]
+            return self[Range(bounds)]
         }
 
         set {
-            self[bounds.lowerBound..<bounds.upperBound + 1] = newValue
+            self[Range(bounds.lowerBound ..< bounds.upperBound)] = newValue
         }
     }
 
     /// Accesses the bytes at the specified range of indexes.
     ///
-    /// - Parameter range: An open range of consecutive elemens (e.g: 0..<5)
-    public subscript(bounds: CountableRange<Binary.Index>) -> Binary.SubSequence {
+    /// - Parameter range: A closed range (e.g: lowerBound...upperBound)
+    public subscript(bounds: CountableClosedRange<Binary.Index>) -> Binary.SubSequence {
         get {
-            precondition(bounds.lowerBound >= 0 && bounds.upperBound <= self.count, "Index out of bounds.")
-
-            return self[bounds.lowerBound ..< bounds.upperBound + 1]
+            return self[Range(bounds.lowerBound..<bounds.upperBound + 1)]
         }
 
         set {
-            self[bounds.lowerBound ..< bounds.upperBound + 1] = newValue
+            self[Range(bounds.lowerBound..<bounds.upperBound + 1)] = newValue
         }
+    }
+}
+
+extension Binary: RangeReplaceableCollection {
+    public init() {
+        self.data = Data()
+    }
+
+    /// Replaces a region of bytes in the data with new bytes from a collection.
+    ///
+    /// - Parameters:
+    ///   - subrange: The range in the binary to replace.
+    ///   - newElements: The replacement bytes.
+    /// - Note: This will resize the data if required, to fit the entire contents of newElements.
+    /// - Precondition: The bounds of subrange must be valid indices of the collection.
+    public mutating func replaceSubrange<C>(_ subrange: Range<Int>, with newElements: C) where C : Collection, C.Iterator.Element == Binary.Element {
+        self.data.replaceSubrange(subrange, with: newElements)
     }
 }
 

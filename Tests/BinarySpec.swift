@@ -132,7 +132,11 @@ class BinarySpec: QuickSpec {
                 it("Should access a range of elements") {
                     let binary: Binary = [0x00, 0x01, 0x02]
 
-                    expect(binary[0..<binary.count]).to(equal(binary))
+                    let openSlice = binary[0..<binary.count]
+                    expect(openSlice).to(equal(binary))
+
+                    let closedSlice = binary[0...2]
+                    expect(closedSlice).to(equal(binary))
                 }
 
                 it("Should change a range of elements") {
