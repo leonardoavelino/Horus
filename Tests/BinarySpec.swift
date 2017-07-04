@@ -111,8 +111,8 @@ class BinarySpec: QuickSpec {
                 }
             }
 
-            // MARK: - Subscripts
-            context("Subscripts") {
+            // MARK: - MutableCollection
+            context("MutableCollection") {
                 it("Should access single element") {
                     let binary: Binary = [0x00, 0x01, 0x02]
 
@@ -147,6 +147,52 @@ class BinarySpec: QuickSpec {
                     expect(binary[0]).to(equal(0x42))
                     expect(binary[1]).to(equal(0x43))
                     expect(binary[2]).to(equal(0x44))
+                }
+
+                it("Should change a range of elements adding elements") {
+                    var binary: Binary = [0x00, 0x01, 0x02]
+
+                    binary[0..<2] = [0x42, 0x43, 0x44]
+
+                    expect(binary[0]).to(equal(0x42))
+                    expect(binary[1]).to(equal(0x43))
+                    expect(binary[2]).to(equal(0x44))
+                    expect(binary[3]).to(equal(0x02))
+                }
+            }
+
+            // MARK: - RangeReplaceableCollection
+            context("RangeReplaceableCollection") {
+                it("Should initialize with empty Data") {
+                    let binary = Binary()
+
+                    expect(binary.count).to(equal(0))
+                }
+
+                it("Should replace subrange using a collection") {
+                    var binary: Binary = [0x01, 0x02, 0x03]
+
+                    binary.replaceSubrange(0..<2, with: [0xFF, 0x00])
+
+                    print(binary.toByteArray())
+
+                    expect(binary[0]).to(equal(0xFF))
+                    expect(binary[1]).to(equal(0x00))
+                    expect(binary[2]).to(equal(0x03))
+                }
+
+                it("Should replace subrange using a collection bigger than the range") {
+                    var binary: Binary = [0x01, 0x02, 0x03]
+
+                    binary.replaceSubrange(0..<2, with: [30, 09, 19, 92])
+
+                    print(binary.toByteArray())
+
+                    expect(binary[0]).to(equal(30))
+                    expect(binary[1]).to(equal(09))
+                    expect(binary[2]).to(equal(19))
+                    expect(binary[3]).to(equal(92))
+                    expect(binary[4]).to(equal(0x03))
                 }
             }
 

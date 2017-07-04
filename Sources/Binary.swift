@@ -178,9 +178,6 @@ extension Binary: MutableCollection {
         }
 
         set {
-            precondition((bounds.upperBound - bounds.lowerBound) == newValue.count,
-                         "Range length should be equal to new values count")
-
             self.data.replaceSubrange(bounds, with: newValue)
         }
     }
