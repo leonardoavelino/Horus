@@ -253,6 +253,32 @@ extension Binary {
         return (byte >> bitPosition) & 0x01
     }
 
+    public mutating func set(bitIndex position: Int, value: Bool, isLittleEndian: Bool = true) throws {
+        let byteSize = 8
+        let bytePosition: Int
+        let bitPosition: UInt8
+
+        if isLittleEndian {
+            bytePosition = self.count - (position / byteSize) - 1
+            bitPosition = UInt8(position % byteSize)
+        } else {
+            bytePosition = position / byteSize
+            bitPosition = UInt8(7 - (position % byteSize))
+        }
+        // Check invariants for byte position.
+        guard bytePosition >= 0, bytePosition < self.count else { throw BinaryError.outOfBounds }
+
+        // bitmask
+        let mask: UInt8 = 1 << bitPosition
+
+        // Set value.
+        if value {
+            self[bytePosition] |= mask
+        } else {
+            self[bytePosition] &= mask
+        }
+    }
+
     /// Get a nibble on a given position.
     ///
     /// - Parameter position: the position of the nibble we want.
