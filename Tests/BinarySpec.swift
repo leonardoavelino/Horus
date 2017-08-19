@@ -811,7 +811,18 @@ class BinarySpec: QuickSpec {
                     }
                 }
             }
+            
+            // MARK: - CustomStringConvertible
+            context("CustomStringConvertible Implementation") {
+                let bin: Binary = [0, 1, 127, 128, 255]
+                it("Should return hex represenation of `bin`") {
+                    expect(String(describing: bin)).to(equal("00017f80ff"))
+                }
+            }
         }
+        
+        
+        
     }
 
 }

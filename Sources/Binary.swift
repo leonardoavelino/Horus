@@ -469,6 +469,13 @@ extension Binary {
     }
 }
 
+// MARK: - String Convertible
+extension Binary: CustomStringConvertible {
+    public var description: String {
+        return self.data.hexEncodedString()
+    }
+}
+
 // MARK: - Equatable Protocol
 extension Binary: Equatable {
     public static func ==(lhs: Binary, rhs: Binary) -> Bool {
