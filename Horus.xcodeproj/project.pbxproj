@@ -15,8 +15,6 @@
 		35CA2AC71E12925700147290 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CA2AB31E12920400147290 /* Quick.framework */; };
 		35CA2AC81E12927100147290 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CA2A931E12920400147290 /* Nimble.framework */; };
 		35CA2AC91E12927100147290 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CA2AAB1E12920400147290 /* Quick.framework */; };
-		FE0AEE131F32231D00225240 /* SynchronizedBinary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0AEE121F32231D00225240 /* SynchronizedBinary.swift */; };
-		FE0AEE141F32231D00225240 /* SynchronizedBinary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0AEE121F32231D00225240 /* SynchronizedBinary.swift */; };
 		FE270B391EDA2F9B00CD2872 /* BinarySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE270B381EDA2F9B00CD2872 /* BinarySpec.swift */; };
 		FE4DFCD61F0AD37F001C4ADC /* Binary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4DFCD51F0AD37F001C4ADC /* Binary.swift */; };
 		FE8AD6511EDAFE880033B326 /* BinaryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8AD6501EDAFE880033B326 /* BinaryError.swift */; };
@@ -231,7 +229,6 @@
 		35CD65161E60192300AF060B /* watchOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-Base.xcconfig"; sourceTree = "<group>"; };
 		35CD65171E60192300AF060B /* watchOS-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-Framework.xcconfig"; sourceTree = "<group>"; };
 		35CD65181E60192300AF060B /* watchOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
-		FE0AEE121F32231D00225240 /* SynchronizedBinary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedBinary.swift; sourceTree = "<group>"; };
 		FE270B381EDA2F9B00CD2872 /* BinarySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpec.swift; sourceTree = "<group>"; };
 		FE4DFCD51F0AD37F001C4ADC /* Binary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Binary.swift; sourceTree = "<group>"; };
 		FE8AD6501EDAFE880033B326 /* BinaryError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BinaryError.swift; path = ../BinaryError.swift; sourceTree = "<group>"; };
@@ -342,7 +339,6 @@
 				FEE980FF1F045AF900465A11 /* Errors */,
 				FEE980EB1F04511900465A11 /* Constants */,
 				FE4DFCD51F0AD37F001C4ADC /* Binary.swift */,
-				FE0AEE121F32231D00225240 /* SynchronizedBinary.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -624,7 +620,6 @@
 					};
 					3549BB3A1DA389E800C63030 = {
 						CreatedOnToolsVersion = 8.0;
-						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					3549BB601DA38ADB00C63030 = {
@@ -835,7 +830,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE0AEE131F32231D00225240 /* SynchronizedBinary.swift in Sources */,
 				FECBF4B01F05480400BE3FA4 /* StringHelper.swift in Sources */,
 				FE4DFCD61F0AD37F001C4ADC /* Binary.swift in Sources */,
 				FE8AD6511EDAFE880033B326 /* BinaryError.swift in Sources */,
@@ -846,7 +840,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE0AEE141F32231D00225240 /* SynchronizedBinary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1064,7 +1057,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35CD650C1E60192300AF060B /* Mac-Framework.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -1080,7 +1072,6 @@
 				PRODUCT_NAME = Horus;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -1089,7 +1080,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35CD650C1E60192300AF060B /* Mac-Framework.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -1152,7 +1142,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35CD65091E60192300AF060B /* Mac-Application.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1175,7 +1164,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35CD65091E60192300AF060B /* Mac-Application.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
