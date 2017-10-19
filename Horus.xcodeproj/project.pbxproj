@@ -15,8 +15,6 @@
 		35CA2AC71E12925700147290 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CA2AB31E12920400147290 /* Quick.framework */; };
 		35CA2AC81E12927100147290 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CA2A931E12920400147290 /* Nimble.framework */; };
 		35CA2AC91E12927100147290 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35CA2AAB1E12920400147290 /* Quick.framework */; };
-		6EEEC88B1F979C57003D9C62 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEEC87A1F979C56003D9C62 /* Nimble.framework */; };
-		6EEEC88D1F979C5A003D9C62 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EEEC88C1F979C5A003D9C62 /* Quick.framework */; };
 		FE270B391EDA2F9B00CD2872 /* BinarySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE270B381EDA2F9B00CD2872 /* BinarySpec.swift */; };
 		FE4DFCD61F0AD37F001C4ADC /* Binary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4DFCD51F0AD37F001C4ADC /* Binary.swift */; };
 		FE5056F71F47C02E002CB077 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5056F61F47C02E002CB077 /* Data.swift */; };
@@ -246,8 +244,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6EEEC88B1F979C57003D9C62 /* Nimble.framework in Frameworks */,
-				6EEEC88D1F979C5A003D9C62 /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,7 +549,6 @@
 				3549BB1D1DA389CD00C63030 /* Frameworks */,
 				3549BB1E1DA389CD00C63030 /* Headers */,
 				3549BB1F1DA389CD00C63030 /* Resources */,
-				6EEEC88E1F979C61003D9C62 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -634,7 +629,7 @@
 				TargetAttributes = {
 					3549BB201DA389CD00C63030 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 4PQKGKU5R7;
+						DevelopmentTeam = 6U9NWPG28J;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
@@ -845,27 +840,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		6EEEC88E1F979C61003D9C62 /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
-			);
-			name = Carthage;
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Nimble.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Quick.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		3549BB1C1DA389CD00C63030 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1047,7 +1021,7 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 4PQKGKU5R7;
+				DEVELOPMENT_TEAM = 6U9NWPG28J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1076,7 +1050,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 4PQKGKU5R7;
+				DEVELOPMENT_TEAM = 6U9NWPG28J;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
