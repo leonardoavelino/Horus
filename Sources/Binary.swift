@@ -130,7 +130,7 @@ public struct Binary: ExpressibleByArrayLiteral {
         // `isHexadecimal` is a local extension. see `StringHelper`
         guard hexaString.isHexadecimal() else { return nil }
 
-        var hexa = Array(hexaString.characters)
+        var hexa = Array(hexaString)
         // pad with zeros on the left, case odd length.
         if hexa.count % 2 != 0 { hexa.insert("0", at: 0) }
 
