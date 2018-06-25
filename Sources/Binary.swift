@@ -92,7 +92,7 @@ public struct Binary: ExpressibleByArrayLiteral {
      
      - Note: Data is copied, so be careful if you're trying to parse a large amount of data.
      */
-    public init<T: Integer>(with number: T) {
+    public init<T: BinaryInteger>(with number: T) {
         var _number = number
         self.init(with: Data(buffer: UnsafeBufferPointer(start: &_number, count: 1)).reversed())
     }
@@ -124,7 +124,7 @@ public struct Binary: ExpressibleByArrayLiteral {
         // clean hexaString case hexString starts with 0x or 0X.
         if hexaString.hasPrefix("0x") || hexaString.hasPrefix("0X") {
             let indexStartOfHexa = hexaString.index(hexaString.startIndex, offsetBy: 2)
-            hexaString = hexaString.substring(with: indexStartOfHexa..<hexaString.endIndex)
+            hexaString = String(hexaString[indexStartOfHexa..<hexaString.endIndex])
         }
 
         // `isHexadecimal` is a local extension. see `StringHelper`
@@ -321,7 +321,7 @@ extension Binary {
      
      - Returns: The parsed integer number.
      */
-    public func scanValue<T: Integer>(start: Int, length: Int) throws -> T {
+    public func scanValue<T: BinaryInteger>(start: Int, length: Int) throws -> T {
         let end = start + length
         guard end <= self.count else { throw BinaryError.outOfBounds }
 
@@ -346,7 +346,7 @@ extension Binary {
      - On a 64-bit platform, Int is the same size as Int64.
      - On a 64-bit platform, UInt is the same size as UInt64.
      */
-    public func get<T: Integer>(at offset: Int) throws -> T {
+    public func get<T: BinaryInteger>(at offset: Int) throws -> T {
         let end = offset + MemoryLayout<T>.size
         guard end <= self.count else { throw BinaryError.outOfBounds }
 
