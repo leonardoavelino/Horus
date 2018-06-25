@@ -134,7 +134,7 @@ public struct Binary: ExpressibleByArrayLiteral {
         // pad with zeros on the left, case odd length.
         if hexa.count % 2 != 0 { hexa.insert("0", at: 0) }
 
-        return stride(from: 0, to: hexa.count, by: 2).flatMap {
+        return stride(from: 0, to: hexa.count, by: 2).compactMap {
             UInt8(String(hexa[$0..<$0.advanced(by: 2)]), radix: 16)
         }
     }
